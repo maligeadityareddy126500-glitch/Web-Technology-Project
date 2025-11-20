@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Cozy Corner Cafe & Bistro</title>
+    <!-- Load Tailwind CSS CDN for styling --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons for aesthetic icons --><script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom CSS for Animations, Font, and Fixed Background */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+        
+        :root {
+            --primary-color: #5C6773; /* Slate/Dark Grey */
+            --secondary-color: #B59410; /* Gold/Bronze */
+            --background-color: #F8F7F3; /* Off-White/Cream */
+            --text-color: #333333;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+            overflow-x: hidden; /* Prevent horizontal scroll due to animations */
+            
+            /* Fixed Background Image for the entire body */
+            background-image: url(images/axel-bimashanda-m-6Uzz2MKwM-unsplash.jpg); /* Replace with your desired fixed body background image */
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Override specific section backgrounds for contrast against fixed body background */
+        .content-section {
+            background-color: var(--background-color); /* Ensure content sections have a solid background */
+        }
+        .alt-bg-section {
+            background-color: var(--primary-color); /* For sections like 'About Us' */
+        }
+
+        /* Styling for subtle scroll-based fade-in effect */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hover effect for menu items */
+        .menu-item-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer; /* Indicate clickability */
+        }
+        .menu-item-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Subtle hero shadow */
+        .hero-shadow {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Logo spin animation on hover */
+        .logo-spin:hover {
+            animation: spin 1s ease-in-out forwards;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(5deg); }
+        }
+
+        /* Modal specific styles */
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.75);
+            transition: opacity 0.3s ease;
+        }
+        .modal-content {
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header & Navigation --><header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <!-- Logo/Name --><a href="#" class="text-3xl font-bold font-['Playfair_Display'] text-[var(--primary-color)] flex items-center logo-spin">
+                <i data-lucide="coffee" class="w-6 h-6 mr-2 text-[var(--secondary-color)]"></i>
+                The Cozy Corner
+            </a>
+
+            <!-- Navigation --><nav class="hidden md:flex space-x-8">
+                <a href="#menu" class="text-[var(--text-color)] hover:text-[var(--secondary-color)] transition duration-300 font-medium">Menu</a>
+                <a href="#about" class="text-[var(--text-color)] hover:text-[var(--secondary-color)] transition duration-300 font-medium">Our Story</a>
+                <a href="#contact" class="text-[var(--text-color)] hover:text-[var(--secondary-color)] transition duration-300 font-medium">Visit Us</a>
+                <button class="px-4 py-1.5 bg-[var(--secondary-color)] text-white rounded-full hover:bg-opacity-90 transition duration-300 shadow-lg">Reserve Table</button>
+            </nav>
+
+            <!-- Mobile Menu Button --><button id="mobile-menu-button" class="md:hidden p-2 rounded-full text-[var(--primary-color)] hover:bg-gray-100">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu Overlay (Initially hidden) --><div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-white shadow-xl py-4 transition-all duration-300">
+            <a href="#menu" class="block px-4 py-2 text-lg hover:bg-gray-50">Menu</a>
+            <a href="#about" class="block px-4 py-2 text-lg hover:bg-gray-50">Our Story</a>
+            <a href="#contact" class="block px-4 py-2 text-lg hover:bg-gray-50">Visit Us</a>
+            <div class="px-4 pt-2">
+                <button class="w-full py-2 bg-[var(--secondary-color)] text-white rounded-lg hover:bg-opacity-90 transition duration-300">Reserve Table</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section --><section class="bg-cover bg-center h-[70vh] flex items-center justify-center hero-shadow">
+        <div class="text-center bg-black/50 p-8 md:p-12 rounded-xl backdrop-blur-sm fade-in-up visible">
+            <h1 class="text-5xl md:text-7xl font-['Playfair_Display'] font-extrabold text-white mb-4">
+                Taste the Tradition
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-200 mb-8 max-w-xl mx-auto">
+                Hand-crafted coffee, fresh daily bakes, and bistro meals made with local ingredients.
+            </p>
+            <a href="#menu" class="inline-block px-8 py-3 text-lg font-semibold bg-[var(--secondary-color)] text-white rounded-full hover:bg-opacity-90 transition duration-300 shadow-xl">
+                Explore Our Menu
+            </a>
+        </div>
+    </section>
+
+    <!-- Menu Section --><section id="menu" class="py-16 md:py-24 container mx-auto px-4 content-section">
+        <div class="text-center mb-12 fade-in-up">
+            <h2 class="text-4xl font-['Playfair_Display'] font-bold text-[var(--primary-color)]">Our Culinary Offerings</h2>
+            <p class="text-lg text-gray-600 mt-2">A curated selection of food and beverages for every moment of your day.</p>
+        </div>
+
+        <!-- Menu Tabs --><div class="flex justify-center mb-8 space-x-4 fade-in-up">
+            <button onclick="showMenu('food')" class="menu-tab active-tab px-6 py-2 rounded-full text-white bg-[var(--primary-color)] hover:bg-opacity-80 transition duration-300 font-medium shadow-md">
+                Food & Meals
+            </button>
+            <button onclick="showMenu('beverages')" class="menu-tab px-6 py-2 rounded-full text-[var(--primary-color)] bg-white border border-[var(--primary-color)] hover:bg-gray-50 transition duration-300 font-medium shadow-md">
+                Beverages & Drinks
+            </button>
+        </div>
+
+        <!-- Food Menu Content --><div id="food-menu" class="menu-content grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <!-- Appetizers/Bites --><div class="fade-in-up">
+                <h3 class="text-2xl font-bold font-['Playfair_Display'] text-[var(--primary-color)] mb-4 border-b pb-2 border-gray-200">Bistro Bites</h3>
+                <!-- Item 1: Truffle Parmesan Fries --><div class="menu-item-card p-4 bg-white rounded-xl shadow-sm mb-4" 
+                    onclick="showDetails(this)" 
+                    data-name="Truffle Parmesan Fries"
+                    data-price="$12.00"
+                    data-image="https://placehold.co/800x600/F8F7F3/5C6773?text=Truffle+Fries"
+                    data-details="Our signature appetizer. A generous portion of golden hand-cut potatoes, seasoned with sea salt, drizzled with premium black truffle oil, and finished with finely grated Italian Parmesan. The perfect crunchy start to your meal. (Contains Dairy)"
+                >
+                    <img src="images/fries.jpeg" alt="Truffle Parmesan Fries" class="w-full h-40 object-cover rounded-lg mb-3">
+                    <div class="flex justify-between items-start">
+                        <p class="font-semibold text-lg">Truffle Parmesan Fries</p>
+                        <span class="text-[var(--secondary-color)] font-bold">₹349/-</span>
+                    </div>
+                    <p class="text-sm text-gray-500">Hand-cut fries tossed with truffle oil and aged Parmesan cheese.</p>
+                </div>
+                <!-- Item 2: Whipped Feta Dip --><div class="menu-item-card p-4 bg-white rounded-xl shadow-sm mb-4" 
+                    onclick="showDetails(this)"
+                    data-name="Whipped Feta Dip"
+                    data-price="$14.50"
+                    data-image="https://placehold.co/800x600/F8F7F3/5C6773?text=Feta+Dip"
+                    data-details="Creamy Greek feta, whipped to a cloud-like texture and blended with olive oil and herbs. Served with a side of warm, fluffy pita bread perfect for dipping. A light, savory, and Mediterranean-inspired favorite. (Vegetarian)"
+                >
+                    <img src="images/whipped feta dip.jpeg" alt="Whipped Feta Dip" class="w-full h-40 object-cover rounded-lg mb-3">
+                    <div class="flex justify-between items-start">
+                        <p class="font-semibold text-lg">Whipped Feta Dip</p>
+                        <span class="text-[var(--secondary-color)] font-bold">₹149/-</span>
+                    </div>
+                    <p class="text-sm text-gray-500">Served with warm pita bread and a drizzle of honey.</p>
+                </div>
+            </div>
+            
+            <!-- Main Dishes --><div class="fade-in-up">
+                <h3 class="text-2xl font-bold font-['Playfair_Display'] text-[var(--primary-color)] mb-4 border-b pb-2 border-gray-200">Main Courses</h3>
+                <!-- Item 1: Avocado Toast Supreme --><div class="menu-item-card p-4 bg-white rounded-xl shadow-sm mb-4"
+                    onclick="showDetails(this)"
+                    data-name="Avocado Toast Supreme"
+                    data-price="$16.00"
+                    data-image="https://placehold.co/800x600/F8F7F3/5C6773?text=Avocado+Toast"
+                    data-details="Our thick-cut sourdough, perfectly toasted, topped with fresh smashed avocado, a layer of delicate smoked salmon, capers, and a sprinkle of microgreens. A powerful start to any day. (Contains Fish, Gluten)"
+                >
+                    <img src="images/avacado toast.jpeg" alt="Avocado Toast Supreme" class="w-full h-40 object-cover rounded-lg mb-3">
+                    <div class="flex justify-between items-start">
+                        <p class="font-semibold text-lg">Avocado Toast Supreme</p>
+                        <span class="text-[var(--secondary-color)] font-bold">₹559/-</span>
+                    </div>
+                    <p class="text-sm text-gray-500">Sourdough, smashed avocado, smoked salmon, capers, microgreens.</p>
+                </div>
+                <!-- Item 2: Classic Croque Monsieur --><div class="menu-item-card p-4 bg-white rounded-xl shadow-sm mb-4"
+                    onclick="showDetails(this)"
+                    data-name="Classic Croque Monsieur"
+                    data-price="$18.50"
+                    data-image="https://placehold.co/800x600/F8F7F3/5C6773?text=Croque+Monsieur"
+                    data-details="A French classic: rich béchamel sauce, thinly sliced smoked ham, and melted Gruyère cheese, layered between two slices of golden brioche and baked until bubbling. Pure comfort food. (Contains Dairy, Pork, Gluten)"
+                >
+                    <img src="images/croqe.avif" alt="Classic Croque Monsieur" class="w-full h-40 object-cover rounded-lg mb-3">
+                    <div class="flex justify-between items-start">
+                        <p class="font-semibold text-lg">Classic Croque Monsieur</p>
+                        <span class="text-[var(--secondary-color)] font-bold">₹449/-</span>
+                    </div>
+                    <p class="text-sm text-gray-500">Gruyère, ham, béchamel on brioche, baked to perfection.</p>
+                </div>
+                <!-- Item 3: Quinoa Power Bowl --><div class="menu-item-card p-4 bg-white rounded-xl shadow-sm mb-4"
+                    onclick="showDetails(this)"
+                    data-name="Quinoa Power Bowl"
+                    data-price="$17.00"
+                    data-image="https://placehold.co/800x600/F8F7F3/5C6773?text=Quinoa+Bowl"
+                    data-details="A hearty and healthy bowl featuring fluffy quinoa, black beans, sweet corn, roasted sweet potato, and fresh cilantro, all tossed in a zesty cilantro-lime dressing. (Vegan, Gluten-Free)"
+                >
+                    <img src="images/quinoa.jpeg" alt="Quinoa Power Bowl" class="w-full h-40 object-cover rounded-lg mb-3">
+                    <div class="flex justify-between items-start">
+                        <p class="font-semibold text-lg">Quinoa Power Bowl</p>
+                        <span class="text-[var(--secondary-color)] font-bold">₹499/-</span>
+                    </div>
+                    <p class="text-sm text-gray-500">Black beans, corn, roasted sweet potato, cilantro-lime dressing (V, GF).</p>
+                </div>
+            </div>
+
+            <!-- Desserts & Sweets --><div class="fade-in-up">
+                <h3 class="text-2xl font-bold font-['Playfair_Display'] text-[var(--primary-color)] mb-4 border-b pb-2 border-gray-200">Sweet Endings</h3>
+                <!-- Item 1: Lavender Crème Brûlée --><div class="menu-item-card p-4 bg-white rounded-xl shadow-sm mb-4"
+                    onclick="showDetails(this)"
+                    data-name="Lavender Crème Brûlée"
+                    data-price="$9.00"
+                    data-image="https://placehold.co/800x600/F8F7F3/5C6773?text=Creme+Brulee"
+                    data-details="A classic custard infused subtly with French lavender flowers for a gentle floral note. Finished with a perfectly torched, shatteringly crisp caramelized sugar crust. (Contains Dairy, Eggs)"
+                >
+                    <img src="images/creme.jpeg" alt="Lavender Crème Brûlée" class="w-full h-40 object-cover rounded-lg mb-3">
+                    <div class="flex justify-between items-start">
+                        <p class="font-semibold text-lg">Lavender Crème Brûlée</p>
+                        <span class="text-[var(--secondary-color)] font-bold">₹379/-</span>
+                    </div>
+                    <p class="text-sm text-gray-500">Infused with French lavender and caramelized sugar crust.</p>
+                </div>
+                <!-- Item 2: Warm Chocolate Lava Cake --><div class="menu-item-card p-4 bg-white rounded-xl shadow-sm mb-4"
+                    onclick="showDetails(this)"
+                    data-name="Warm Chocolate Lava Cake"
+                    data-price="$10.50"
+                    data-image="https://placehold.co/800x600/F8F7F3/5C6773?text=Lava+Cake"
+                    data-details="A decadent, rich dark chocolate cake with a molten center that flows out upon the first cut. Served warm alongside a scoop of cool, creamy vanilla bean ice cream. (Contains Dairy, Gluten, Eggs)"
+                >
+                    <img src="images/lava cake.webp" alt="Warm Chocolate Lava Cake" class="w-full h-40 object-cover rounded-lg mb-3">
+                    <div class="flex justify-between items-start">
+                        <p class="font-semibold text-lg">Warm Chocolate Lava Cake</p>
+                        <span class="text-[var(--secondary-color)] font-bold">₹249/-</span>
+                    </div>
+                    <p class="text-sm text-gray-500">Served with vanilla bean ice cream.</p>
+                </div>
+                <!-- Item 3: Daily Artisanal Scones --><div class="menu-item-card p-4 bg-white rounded-xl shadow-sm mb-4"
+                    onclick="showDetails(this)"
+                    data-name="Daily Artisanal Scones"
+                    data-price="$6.00"
+                    data-image="https://placehold.co/800x600/F8F7F3/5C6773?text=Scones"
+                    data-details="Our bakers craft a new seasonal scone flavor every morning, ranging from classic buttermilk to spiced cranberry orange. Perfectly flaky and served with clotted cream and jam. Ask your server for today's flavour! (Contains Dairy, Gluten)"
+                >
+                    <img src="images/scones.jpg" alt="Daily Artisanal Scones" class="w-full h-40 object-cover rounded-lg mb-3">
+                    <div class="flex justify-between items-start">
+                        <p class="font-semibold text-lg">Daily Artisanal Scones</p>
+                        <span class="text-[var(--secondary-color)] font-bold">₹349/-</span>
+                    </div>
+                    <p class="text-sm text-gray-500">Ask your server for today's seasonal flavour.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Beverages Menu Content (Initially hidden) --><div id="beverages-menu" class="menu-content hidden grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <!-- Espresso Bar --><div class="fade-in-up">
+                <h3 class="text-2xl font-bold font-['Playfair_Display'] text-[var(--primary-color)] mb-4 border-b pb-2 border-gray-200">The Espresso Bar</h3>
+                <!-- Item 1: Flat White --><div class="menu-item-card p-4 bg-white rounded-xl shadow-sm mb-4"
+                    onclick="showDetails(this)"
+                    data-name="Flat White"
+                    data-price="$5.50"
+                    data-image="https://placehold.co/800x600/F8F7F3/5C6773?text=Flat+White"
+                    data-details="A rich double shot of espresso topped with a thin layer of velvety steamed milk (microfoam). Ideal for those who love the strong flavor of coffee with a smooth texture. (Dairy options available)"
+                >
+                    <img src="images/flat white.jpeg" alt="Flat White" class="w-full h-40 object-cover rounded-lg mb-3">
+                    <div class="flex justify-between items-start">
+                        <p class="font-semibold text-lg">Flat White</p>
+                        <span class="text-[var(--secondary-color)] font-bold">₹220/-</span>
+                    </div>
+                    <p class="text-sm text-gray-500">Double shot, microfoam, rich texture.</p>
+                </div>
+                <!-- Item 2: Iced Maple Pecan Latte --><div class="menu-item-card p-4 bg-white rounded-xl shadow-sm mb-4"
+                    onclick="showDetails(this)"
+                    data-name="Iced Maple Pecan Latte"
+                    data-price="$6.50"
+                    data-image="https://placehold.co/800x600/F8F7F3/5C6773?text=Pecan+Latte"
+                    data-details="Our seasonal signature latte. Espresso and cold milk mixed with house-made maple and toasted pecan syrup, served over ice. Sweet, nutty, and highly refreshing. (Nut Allergy Warning)"
+                >
+                    <img src="images/pecan latte.jpeg" alt="Iced Maple Pecan Latte" class="w-full h-40 object-cover rounded-lg mb-3">
+                    <div class="flex justify-between items-start">
+                        <p class="font-semibold text-lg">Iced Maple Pecan Latte</p>
+                        <span class="text-[var(--secondary-color)] font-bold">₹199/-</span>
+                    </div>
+                    <p class="text-sm text-gray-500">Signature blend, served cold with house-made syrup.</p>
+                </div>
+                <!-- Item 3: Pour-Over Single Origin --><div class="menu-item-card p-4 bg-white rounded-xl shadow-sm mb-4"
+                    onclick="showDetails(this)"
+                    data-name="Pour-Over Single Origin"
+                    data-price="$7.00"
+                    data-image="https://placehold.co/800x600/F8F7F3/5C6773?text=Pour+Over"
+                    data-details="Experience coffee in its purest form. Hand-brewed using the V60 method to highlight the distinct and complex notes of our rotating single-origin bean. Ask your barista for today's selection. (Caffeine Free available)"
+                >
+                    <img src="images/pour over.jpeg" alt="Pour-Over Single Origin" class="w-full h-40 object-cover rounded-lg mb-3">
+                    <div class="flex justify-between items-start">
+                        <p class="font-semibold text-lg">Pour-Over Single Origin</p>
+                        <span class="text-[var(--secondary-color)] font-bold">₹349/-</span>
+                    </div>
+                    <p class="text-sm text-gray-500">Ask for today's featured bean.</p>
+                </div>
+            </div>
+
+            <!-- Teas & Infusions --><div class="fade-in-up">
+                <h3 class="text-2xl font-bold font-['Playfair_Display'] text-[var(--primary-color)] mb-4 border-b pb-2 border-gray-200">Teas & Infusions</h3>
+                <!-- Item 1: Classic Earl Grey --><div class="menu-item-card p-4 bg-white rounded-xl shadow-sm mb-4"
+                    onclick="showDetails(this)"
+                    data-name="Classic Earl Grey"
+                    data-price="$4.00"
+                    data-image="https://placehold.co/800x600/F8F7F3/5C6773?text=Earl+Grey"
+                    data-details="A timeless black tea blend scented with the citrus essence of bergamot oil. Served piping hot or iced. Perfect on its own or with a splash of milk. (Contains Caffeine)"
+                >
+                    <img src="images/earl grey.jpeg" alt="Classic Earl Grey" class="w-full h-40 object-cover rounded-lg mb-3">
+                    <div class="flex justify-between items-start">
+                        <p class="font-semibold text-lg">Classic Earl Grey</p>
+                        <span class="text-[var(--secondary-color)] font-bold">₹189/-</span>
+                    </div>
+                    <p class="text-sm text-gray-500">Bergamot scented black tea.</p>
+                </div>
+                <!-- Item 2: Iced Hibiscus Cooler --><div class="menu-item-card p-4 bg-white rounded-xl shadow-sm mb-4"
+                    onclick="showDetails(this)"
+                    data-name="Iced Hibiscus Cooler"
+                    data-price="$5.00"
+                    data-image="https://placehold.co/800x600/F8F7F3/5C6773?text=Hibiscus+Cooler"
+                    data-details="A brightly colored and tangy herbal infusion. This caffeine-free cooler is made from dried hibiscus flowers, lime, and a touch of agave nectar. Highly refreshing on a warm day. (Caffeine Free)"
+                >
+                    <img src="images/hibiscus cooler.jpeg" alt="Iced Hibiscus Cooler" class="w-full h-40 object-cover rounded-lg mb-3">
+                    <div class="flex justify-between items-start">
+                        <p class="font-semibold text-lg">Iced Hibiscus Cooler</p>
+                        <span class="text-[var(--secondary-color)] font-bold">₹220/-</span>
+                    </div>
+                    <p class="text-sm text-gray-500">Tangy, refreshing, and naturally caffeine-free.</p>
+                </div>
+                <!-- Item 3: Matcha Zen Bowl --><div class="menu-item-card p-4 bg-white rounded-xl shadow-sm mb-4"
+                    onclick="showDetails(this)"
+                    data-name="Matcha Zen Bowl"
+                    data-price="$8.50"
+                    data-image="https://placehold.co/800x600/F8F7F3/5C6773?text=Matcha+Bowl"
+                    data-details="Finely ground Japanese green tea, traditionally whisked for a smooth, vibrant, and powerful experience. Served with your choice of dairy or oat milk. (Contains Caffeine)"
+                >
+                    <img src="images/matcha bowl.jpeg" alt="Matcha Zen Bowl" class="w-full h-40 object-cover rounded-lg mb-3">
+                    <div class="flex justify-between items-start">
+                        <p class="font-semibold text-lg">Matcha Zen Bowl</p>
+                        <span class="text-[var(--secondary-color)] font-bold">₹449/-</span>
+                    </div>
+                    <p class="text-sm text-gray-500">Whisked Japanese Matcha with oat milk.</p>
+                </div>
+            </div>
+
+            <!-- Fresh Juices & Smoothies --><div class="fade-in-up">
+                <h3 class="text-2xl font-bold font-['Playfair_Display'] text-[var(--primary-color)] mb-4 border-b pb-2 border-gray-200">Juices & Smoothies</h3>
+                <!-- Item 1: Green Detox --><div class="menu-item-card p-4 bg-white rounded-xl shadow-sm mb-4"
+                    onclick="showDetails(this)"
+                    data-name="Green Detox" 
+                    data-price="$9.00"
+                    data-image="https://placehold.co/800x600/F8F7F3/5C6773?text=Green+Juice"
+                    data-details="Our signature cold-pressed blend of nutrient-rich greens: spinach, kale, apple, invigorating ginger, and a bright squeeze of lemon. Boost your day the natural way. (Vegan, Gluten-Free)"
+                >
+                    <img src="images/green juice.jpeg" alt="Green Detox Juice" class="w-full h-40 object-cover rounded-lg mb-3">
+                    <div class="flex justify-between items-start">
+                        <p class="font-semibold text-lg">Green Detox</p>
+                        <span class="text-[var(--secondary-color)] font-bold">₹349/-</span>
+                    </div>
+                    <p class="text-sm text-gray-500">Spinach, kale, apple, ginger, lemon (cold-pressed).</p>
+                </div>
+                <!-- Item 2: Berry Blast Smoothie --><div class="menu-item-card p-4 bg-white rounded-xl shadow-sm mb-4"
+                    onclick="showDetails(this)"
+                    data-name="Berry Blast Smoothie"
+                    data-price="$8.00"
+                    data-image="https://placehold.co/800x600/F8F7F3/5C6773?text=Berry+Smoothie"
+                    data-details="A thick, creamy blend of mixed seasonal berries, ripe banana, thick Greek yogurt, and almond milk. The perfect balance of sweet and tangy. (Contains Dairy)"
+                >
+                    <img src="images/berry blast.jpeg" alt="Berry Blast Smoothie" class="w-full h-40 object-cover rounded-lg mb-3">
+                    <div class="flex justify-between items-start">
+                        <p class="font-semibold text-lg">Berry Blast Smoothie</p>
+                        <span class="text-[var(--secondary-color)] font-bold">₹250/-</span>
+                    </div>
+                    <p class="text-sm text-gray-500">Mixed berries, banana, Greek yogurt, almond milk.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section --><section id="about" class="alt-bg-section py-20 md:py-32">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center gap-12">
+            <!-- Image Side --><div class="md:w-1/2 fade-in-up">
+                <img src="images/backg.jpg" alt="Cozy cafe interior" class="rounded-xl shadow-2xl object-cover w-full h-auto">
+            </div>
+            <!-- Text Side --><div class="md:w-1/2 text-white fade-in-up">
+                <h2 class="text-4xl font-['Playfair_Display'] font-bold mb-4">Our Story: More Than Just Coffee</h2>
+                <p class="text-gray-200 text-lg mb-6">
+                    The Cozy Corner was founded on the simple idea that great food and great company go hand-in-hand. We source our coffee beans directly from ethical farms and use only the freshest, locally-sourced ingredients for our bistro meals.
+                </p>
+                <p class="text-gray-300">
+                    From our slow-drip cold brews to our seasonal artisan sandwiches, every item is prepared with passion and served with a genuine smile. Join us for your morning ritual, a quick lunch, or a relaxing evening dessert.
+                </p>
+                <div class="mt-8">
+                    <i data-lucide="award" class="w-8 h-8 text-[var(--secondary-color)] inline-block mr-3"></i>
+                    <span class="text-lg font-semibold text-[var(--secondary-color)]">Voted "Best Local Cafe" 3 Years Running!</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Footer Section --><footer id="contact" class="py-12 md:py-16 bg-white border-t border-gray-100 content-section">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 fade-in-up">
+            
+            <!-- Logo/Mission --><div>
+                <a href="#" class="text-2xl font-bold font-['Playfair_Display'] text-[var(--primary-color)] flex items-center mb-3">
+                    <i data-lucide="coffee" class="w-5 h-5 mr-2 text-[var(--secondary-color)]"></i>
+                    The Cozy Corner
+                </a>
+                <p class="text-gray-500 text-sm">Crafting moments of warmth and flavor, one cup at a time.</p>
+            </div>
+            
+            <!-- Hours --><div>
+                <h4 class="text-lg font-semibold text-[var(--primary-color)] mb-4">Hours of Operation</h4>
+                <ul class="text-gray-600 space-y-1 text-sm">
+                    <li>Mon - Fri: 7:00 AM - 9:00 PM</li>
+                    <li>Sat - Sun: 8:00 AM - 6:00 PM</li>
+                </ul>
+            </div>
+
+            <!-- Location & Contact --><div>
+                <h4 class="text-lg font-semibold text-[var(--primary-color)] mb-4">Find Us</h4>
+                <p class="text-gray-600 text-sm mb-2">
+                    123 Gourmet Lane, Downtown District, City, 10001
+                </p>
+                <p class="text-sm">
+                    <a href="tel:5551234567" class="text-[var(--primary-color)] hover:text-[var(--secondary-color)] transition duration-300 flex items-center">
+                        <i data-lucide="phone" class="w-4 h-4 mr-2"></i>(555) 123-4567
+                    </a>
+                </p>
+                <p class="text-sm">
+                    <a href="mailto:hello@cozycorner.com" class="text-[var(--primary-color)] hover:text-[var(--secondary-color)] transition duration-300 flex items-center mt-1">
+                        <i data-lucide="mail" class="w-4 h-4 mr-2"></i>hello@cozycorner.com
+                    </a>
+                </p>
+            </div>
+
+            <!-- Social Media --><div>
+                <h4 class="text-lg font-semibold text-[var(--primary-color)] mb-4">Follow Us</h4>
+                <div class="flex space-x-3">
+                    <a href="#" class="text-gray-600 hover:text-[var(--secondary-color)] transition duration-300">
+                        <i data-lucide="instagram" class="w-6 h-6"></i>
+                    </a>
+                    <a href="#" class="text-gray-600 hover:text-[var(--secondary-color)] transition duration-300">
+                        <i data-lucide="facebook" class="w-6 h-6"></i>
+                    </a>
+                    <a href="#" class="text-gray-600 hover:text-[var(--secondary-color)] transition duration-300">
+                        <i data-lucide="twitter" class="w-6 h-6"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        <div class="container mx-auto px-4 mt-8 pt-6 border-t border-gray-100 text-center text-sm text-gray-500">
+            &copy; 2024 The Cozy Corner Cafe & Bistro. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Item Detail Modal (Initially hidden) --><div id="item-detail-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center modal-overlay" onclick="closeModal()">
+        
+        <div class="bg-white rounded-xl shadow-2xl w-11/12 md:w-3/4 lg:w-2/3 max-h-[90vh] overflow-y-auto modal-content" onclick="event.stopPropagation()">
+            
+            <!-- Close Button --><button onclick="closeModal()" class="absolute top-3 right-3 p-2 rounded-full text-gray-600 hover:bg-gray-100 transition duration-200">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+
+            <div class="grid grid-cols-1 md:grid-cols-2">
+                
+                <!-- Image Side --><div class="p-4 md:p-6">
+                    <img id="modal-image" src="" alt="Menu Item" class="w-full h-auto max-h-[400px] object-cover rounded-lg shadow-md mb-4">
+                </div>
+
+                <!-- Details Side --><div class="p-6 md:p-8">
+                    <h3 id="modal-name" class="text-4xl font-['Playfair_Display'] font-bold text-[var(--primary-color)] mb-2"></h3>
+                    <p id="modal-price" class="text-2xl font-bold text-[var(--secondary-color)] mb-6"></p>
+
+                    <p id="modal-details" class="text-gray-700 text-lg leading-relaxed mb-8"></p>
+
+                    <button class="w-full py-3 bg-[var(--primary-color)] text-white rounded-lg hover:bg-opacity-80 transition duration-300 font-semibold shadow-lg">
+                        Add to Order (Placeholder)
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- JavaScript for Interactivity and Animations --><script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // 1. Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 2. Menu Tab Switching Logic
+        function showMenu(menuType) {
+            const foodMenu = document.getElementById('food-menu');
+            const beveragesMenu = document.getElementById('beverages-menu');
+            const tabs = document.querySelectorAll('.menu-tab');
+
+            // Toggle visibility
+            if (menuType === 'food') {
+                foodMenu.classList.remove('hidden');
+                beveragesMenu.classList.add('hidden');
+            } else if (menuType === 'beverages') {
+                foodMenu.classList.add('hidden');
+                beveragesMenu.classList.remove('hidden');
+            }
+
+            // Toggle active styles on buttons
+            tabs.forEach(tab => {
+                const isActive = tab.getAttribute('onclick').includes(menuType);
+                if (isActive) {
+                    tab.classList.add('active-tab', 'text-white', 'bg-[var(--primary-color)]', 'border-transparent');
+                    tab.classList.remove('text-[var(--primary-color)]', 'bg-white', 'border-[var(--primary-color)]');
+                } else {
+                    tab.classList.remove('active-tab', 'text-white', 'bg-[var(--primary-color)]', 'border-transparent');
+                    tab.classList.add('text-[var(--primary-color)]', 'bg-white', 'border-[var(--primary-color)]');
+                }
+            });
+        }
+        
+        // Ensure initial state is correct
+        window.onload = () => showMenu('food');
+
+
+        // 3. Item Detail Modal Logic
+        const modal = document.getElementById('item-detail-modal');
+        const modalName = document.getElementById('modal-name');
+        const modalPrice = document.getElementById('modal-price');
+        const modalImage = document.getElementById('modal-image');
+        const modalDetails = document.getElementById('modal-details');
+
+        function showDetails(element) {
+            // Extract data from the clicked element
+            const name = element.getAttribute('data-name');
+            const price = element.getAttribute('data-price');
+            // Data-image attribute holds the URL for the larger image
+            const image = element.getAttribute('data-image'); 
+            const details = element.getAttribute('data-details');
+
+            // Populate modal content
+            modalName.textContent = name;
+            modalPrice.textContent = price;
+            modalImage.src = image;
+            modalImage.alt = name;
+            modalDetails.textContent = details;
+
+            // Display the modal
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            document.body.style.overflow = ''; // Restore background scrolling
+        }
+
+        // Add keyboard escape key listener to close modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+
+
+        // 4. Scroll Animation Logic (Intersection Observer)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Check if the element has not already been marked visible
+                    if (!entry.target.classList.contains('visible')) {
+                        entry.target.classList.add('visible');
+                        // Stop observing after it has become visible
+                        observer.unobserve(entry.target); 
+                    }
+                }
+            });
+        }, {
+            // Options: trigger when 10% of the element is visible
+            threshold: 0.1 
+        });
+
+        // Target all sections/elements with the fade-in-up class
+        document.querySelectorAll('.fade-in-up').forEach(element => {
+            // Check if the element is NOT inside the Hero Section (which should be visible immediately)
+            const isHeroSection = element.closest('.hero-shadow');
+            if (!isHeroSection || !element.classList.contains('visible')) {
+                 observer.observe(element);
+            }
+        });
+
+    </script>
+</body>
+</html>
